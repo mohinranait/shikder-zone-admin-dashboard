@@ -4,7 +4,7 @@ import "./globals.css";
 import ReduxProvider from "@/providers/ReduxProvider";
 import { Toaster } from "react-hot-toast";
 import MediaModal from "@/components/modals/MediaModal";
-
+// Nothign
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
