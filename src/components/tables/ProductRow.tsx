@@ -70,9 +70,11 @@ const ProductRow: FC<Props> = ({ product, setIsOpen, setProducts }) => {
               >
                 Edit
               </Link>
-              <span className="text-xs text-slate-500 hover:underline cursor-pointer hover:text-primary">
-                View
-              </span>
+              <Link href={`/product/${slug}`}>
+                <span className="text-xs text-slate-500 hover:underline cursor-pointer hover:text-primary">
+                  Quick View
+                </span>
+              </Link>
               <span
                 onClick={() => {
                   setIsOpen(true);
@@ -80,7 +82,7 @@ const ProductRow: FC<Props> = ({ product, setIsOpen, setProducts }) => {
                 }}
                 className="text-xs text-slate-500 hover:underline cursor-pointer hover:text-primary"
               >
-                Delete
+                Permanently Delete
               </span>
             </div>
           </div>

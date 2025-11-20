@@ -28,6 +28,7 @@ import CategoryUpdateModal from "../modals/CategoryUpdateModal";
 import { defaultImage } from "@/utils/exportImages";
 import { Switch } from "../ui/switch";
 import { TCategoryType } from "@/types/category.type";
+import { cn } from "@/lib/utils";
 
 type ExtendedCategory = TCategoryType & {
   children: ExtendedCategory[];
@@ -170,17 +171,21 @@ const CategoryTable = () => {
     const row = (
       <TableRow key={cat._id}>
         <TableCell className="w-4" />
-        <TableCell className={`pl-${level * 4}`}>
+        <TableCell className={`flex items-center gap-4 pl-${level * 4}`}>
           <div className="flex gap-2">
-            <Image
-              src={cat?.catThumbnail || defaultImage}
-              className="w-[40px] h-[40px] rounded"
-              width={40}
-              height={40}
-              alt="cat image"
-            />
+            {level == 0 && (
+              <Image
+                src={cat?.catThumbnail || defaultImage}
+                className="w-[40px] h-[40px] rounded"
+                width={40}
+                height={40}
+                alt="cat image"
+              />
+            )}
             <div>
-              <p>{cat?.name}</p>
+              <p className={cn("", level == 0 && "font-semibold")}>
+                {cat?.name}
+              </p>
               <div className="flex mt-[2px] gap-1 items-center">
                 <span
                   onClick={() => {
