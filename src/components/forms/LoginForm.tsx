@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { useFormik } from "formik";
 import { Eye, EyeOff, LoaderCircle, Lock, Mail } from "lucide-react";
 import { userLogin, userLogout } from "@/actions/authApi";
@@ -62,7 +61,7 @@ const LoginForm = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className="flex flex-col pt-6 gap-4">
+    <form onSubmit={formik.handleSubmit} className="flex flex-col  gap-4">
       <div className="">
         <p className="text-lg font-semibold text-gray-900 ">Login</p>
         <p className="text-slate-600 ">This panel for admin or app authority</p>
@@ -132,16 +131,10 @@ const LoginForm = () => {
         ) : null}
       </div>
       <div className="flex justify-between">
-        <Button disabled={isLoading} className="px-6">
+        <Button disabled={isLoading} className="px-6 w-full">
           {isLoading ? <LoaderCircle className="animate-spin " /> : null}
           Login
         </Button>
-        <Link
-          href={"/forgot"}
-          className="text-nowrap text-gray-700 hover:underline"
-        >
-          Forgot password
-        </Link>
       </div>
     </form>
   );

@@ -130,8 +130,11 @@ const AttributeConfigForm: FC<Props> = ({ attributeId }) => {
           id="slug"
           name="slug"
           placeholder="Slug"
-          value={slug || formik.values.name?.split(" ").join("-")}
-          onChange={(e) => setSlug(e.target.value)}
+          value={
+            slug?.toLowerCase() ||
+            formik.values.name?.toLowerCase()?.split(" ").join("-")
+          }
+          onChange={(e) => setSlug(e.target.value?.toLowerCase())}
         />
       </div>
 

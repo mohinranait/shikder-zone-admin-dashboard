@@ -41,7 +41,7 @@ const AttributeForm: FC<Props> = ({ closeUpdateModal }) => {
   const formik = useFormik({
     initialValues: {
       name: selectedAttribute?.name || "",
-      slug: selectedAttribute?.slug || "",
+      slug: selectedAttribute?.slug?.toLowerCase() || "",
       status: selectedAttribute?.status || "Active",
     },
     enableReinitialize: true,
@@ -77,6 +77,7 @@ const AttributeForm: FC<Props> = ({ closeUpdateModal }) => {
           if (data.success) {
             dispatch(addAttribute({ data: data?.payload, type: "AddNew" }));
             dispatch(setSelectedAttribute(null));
+            setSlug("");
             toast.success("Attribute is created");
             resetForm();
           }
@@ -118,8 +119,11 @@ const AttributeForm: FC<Props> = ({ closeUpdateModal }) => {
           id="slug"
           name="slug"
           placeholder="Slug"
-          value={slug || formik.values.name?.split(" ").join("-")}
-          onChange={(e) => setSlug(e.target.value)}
+          value={
+            slug.toLowerCase() ||
+            formik.values.name?.toLowerCase()?.split(" ").join("-")
+          }
+          onChange={(e) => setSlug(e.target.value.toLowerCase())}
         />
       </div>
 
