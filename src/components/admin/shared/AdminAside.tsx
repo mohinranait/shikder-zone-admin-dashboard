@@ -1,10 +1,12 @@
 "use client";
+import { cn } from "@/lib/utils";
 import {
   Calendar,
   CreditCard,
   Image as ImageIcon,
   LayoutDashboard,
   ShoppingBasket,
+  ShoppingCart,
   Users,
   Waypoints,
 } from "lucide-react";
@@ -72,13 +74,32 @@ const AdminAside: FC<Props> = ({ isToggle }) => {
       <Sidebar collapsed={isToggle} toggled={true} className="bg-white">
         <div className="pl-5 h-[60px] z-10 flex bg-white items-center ">
           {isToggle ? (
-            <span className="text-xl font-bold">BC</span>
+            <div className="bg-primary text-white p-2 rounded-lg">
+              <span className="text-xl font-bold">
+                <ShoppingCart />{" "}
+              </span>
+            </div>
           ) : (
             <Link
               href={"/admin/dashboard"}
               className="text-2xl  font-extralight"
             >
-              CollectionBD
+              <div className="flex items-center space-x-2">
+                <div className="bg-primary text-white p-2 rounded-lg">
+                  <span className="text-xl font-bold">
+                    <ShoppingCart />{" "}
+                  </span>
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-primary uppercase leading-6 ">
+                    Shider
+                    <span className={cn("text-gray-950 font-normal", "")}>
+                      Zone
+                    </span>{" "}
+                  </h1>
+                  <p className="text-xs text-gray-500">Online Shopping</p>
+                </div>
+              </div>
             </Link>
           )}
         </div>

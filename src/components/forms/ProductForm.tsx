@@ -183,8 +183,11 @@ const ProductForm = () => {
   if (loading) return <div>Data Fetching</div>;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex justify-between items-center ">
+    <form
+      onSubmit={handleSubmit}
+      className=" fixed mx-auto w-[calc(100vw-300px)] "
+    >
+      <div className="flex  justify-between items-center ">
         <p className="text-xl font-medium text-slate-950">Add New Product</p>
         <div className="space-x-4">
           <Button type="button" variant={"outline"}>
@@ -198,7 +201,8 @@ const ProductForm = () => {
         </div>
       </div>
       <hr className="my-3" />
-      <div className="flex gap-4 mt-2">
+
+      <div className="flex gap-4 mt-2 max-h-[calc(100vh-150px)] overflow-y-auto pb-10">
         <div className="flex-grow  ">
           <div className="flex flex-col gap-4 2xl:max-w-[1400px] mx-auto">
             <div>
@@ -212,6 +216,8 @@ const ProductForm = () => {
                     dispatch(
                       setProduct({ ...product, productName: e.target.value })
                     );
+                    const sl = generateSlug(e.target.value);
+                    setSlug(sl);
                   }}
                 />
                 {errors?.productName && (
@@ -226,8 +232,6 @@ const ProductForm = () => {
                   value={product.name || ""}
                   onChange={(e) => {
                     dispatch(setProduct({ ...product, name: e.target.value }));
-                    const sl = generateSlug(e.target.value);
-                    setSlug(sl);
                   }}
                 />
                 {errors?.name && (
@@ -303,7 +307,10 @@ const ProductForm = () => {
                 id="short-desc"
                 onChange={(e) => {
                   dispatch(
-                    setProduct({ ...product, productShortDesc: e.target.value })
+                    setProduct({
+                      ...product,
+                      productShortDesc: e.target.value,
+                    })
                   );
                 }}
                 value={product?.productShortDesc || ""}
