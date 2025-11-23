@@ -10,6 +10,15 @@ import { Calendar } from "@/components/ui/calendar";
 import { TagsInput } from "react-tag-input-component";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -512,8 +521,13 @@ const ProductForm = () => {
               </div>
             </div>
 
+            {/* Categories */}
             <ManageCategory />
+
+            {/* Brand section */}
             <ManageBrand />
+
+            {/* Image section */}
             <div className=" bg-white rounded border border-l-slate-100 bg-card text-card-foreground ">
               <div className="py-2 px-4 border-b border-l-slate-200">
                 <p className="text-base font-semibold">Product Image</p>
@@ -555,6 +569,81 @@ const ProductForm = () => {
                 </div>
               </div>
             </div>
+
+            {/* Affiliate section */}
+            <div className=" g-white rounded border border-l-slate-100 bg-card text-card-foreground">
+              <div className="py-2 px-4 border-b border-l-slate-200">
+                <p className="text-base font-semibold">Affiliate </p>
+              </div>
+              <div className="px-4  py-4 space-y-4">
+                <div className="flex justify-between items-center">
+                  <Label
+                    htmlFor="affiliate-price"
+                    className="text-nowrap cursor-pointer"
+                  >
+                    Affiliate price (৳)
+                  </Label>
+                  <input
+                    id="affiliate-price"
+                    type="number"
+                    className="flex h-8 w-[150px] rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                    placeholder="Affiliate price"
+                    value={product?.afffiliate?.afffiliatePrice || ""}
+                    onChange={(e) =>
+                      dispatch(
+                        setProduct({
+                          ...product,
+                          afffiliate: {
+                            ...product?.afffiliate,
+                            afffiliatePrice: e?.target?.value
+                              ? +e?.target?.value
+                              : 0,
+                          },
+                        })
+                      )
+                    }
+                  />
+                </div>
+                <div className="flex justify-between items-center">
+                  <Label
+                    htmlFor="market"
+                    className="text-nowrap cursor-pointer"
+                  >
+                    Affiliate Market
+                  </Label>
+                  <Select
+                    value={product?.afffiliate?.company || ""}
+                    onValueChange={(e: string) => {
+                      dispatch(
+                        setProduct({
+                          ...product,
+                          afffiliate: {
+                            ...product?.afffiliate,
+                            company: e,
+                          },
+                        })
+                      );
+                    }}
+                  >
+                    <SelectTrigger className="w-[150px]">
+                      <SelectValue placeholder="Select a market" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Select market</SelectLabel>
+                        <SelectItem value="I-Uddokta">I-Uddokta</SelectItem>
+                        <SelectItem value="SHP Bazar">SHP Bazar</SelectItem>
+                        <SelectItem value="Mumo Lifestyle">
+                          Mumo Lifestyle
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            {/* Visibility section */}
             <div className=" g-white rounded border border-l-slate-100 bg-card text-card-foreground">
               <div className="py-2 px-4 border-b border-l-slate-200">
                 <p className="text-base font-semibold">Visibility</p>

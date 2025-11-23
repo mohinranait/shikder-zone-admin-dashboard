@@ -261,7 +261,8 @@ const ProductTable = () => {
           <Table className="w-full border  border-slate-100">
             <TableHeader>
               <TableRow>
-                <TableHead>Product</TableHead>
+                <TableHead className="w-[400px]">Product</TableHead>
+                <TableHead>Affiliate</TableHead>
                 <TableHead>SKU ID</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Feature</TableHead>

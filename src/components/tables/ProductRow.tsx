@@ -62,7 +62,7 @@ const ProductRow: FC<Props> = ({ product, setIsOpen, setProducts }) => {
           />
 
           <div>
-            <p>{name}</p>
+            <p className="">{name}</p>
             <div className="flex mt-[2px] gap-1 items-center">
               <Link
                 href={`/admin/product?edit=${slug}`}
@@ -87,6 +87,14 @@ const ProductRow: FC<Props> = ({ product, setIsOpen, setProducts }) => {
             </div>
           </div>
         </div>
+      </TableCell>
+      <TableCell>
+        <p className="text-gray-700">
+          Price: {product?.afffiliate?.afffiliatePrice || "N/A"}{" "}
+        </p>
+        <p className="text-gray-700">
+          {product?.afffiliate?.company || "N/A"}{" "}
+        </p>
       </TableCell>
       <TableCell>
         <p>{skuCode || "--"} </p>

@@ -52,6 +52,10 @@ export type TVariation = {
 export type TProduct = {
   _id?:string;
   author: string;
+  afffiliate: { 
+    company: string,  
+    afffiliatePrice: number,  
+  },
   brand?: string[];
   category?: string[];
   details?: string;
