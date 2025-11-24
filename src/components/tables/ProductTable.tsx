@@ -256,6 +256,8 @@ const ProductTable = () => {
           </SelectContent>
         </Select>
       </div>
+
+      {/* Product table */}
       <div className=" overflow-y-auto">
         <div className="min-w-[550px] ">
           <Table className="w-full border  border-slate-100">
