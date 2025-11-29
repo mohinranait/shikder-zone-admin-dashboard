@@ -7,9 +7,9 @@ import UploadImageComponent from "./UploadImageComponent";
 import { useAppSelector } from "@/hooks/useRedux";
 
 const MediaWrapper = () => {
-  const { images, selectedFile } = useAppSelector((state) => state.media);
+  const { images } = useAppSelector((state) => state.media);
   const [isUploadSection, setIsUploadSection] = useState<boolean>(false);
-  const [imageDetails, setImageDetails] = useState<number | null>(null);
+  const [imageIndex, setImageIndex] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <div className="flex flex-col gap-4">
@@ -40,7 +40,7 @@ const MediaWrapper = () => {
               key={index}
               img={img}
               onCallBack={() => {
-                setImageDetails(index);
+                setImageIndex(index);
                 setIsOpen(true);
               }}
             />
@@ -48,7 +48,12 @@ const MediaWrapper = () => {
         </div>
       </div>
 
-      <ImageDetailsModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ImageDetailsModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        imageIndex={imageIndex}
+        indexCallback={(idx: number | null) => setImageIndex(idx)}
+      />
     </div>
   );
 };

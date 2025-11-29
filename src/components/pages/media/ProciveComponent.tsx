@@ -5,13 +5,10 @@ import Image from "next/image";
 import React, { useState } from "react";
 import UploadImageComponent from "./UploadImageComponent";
 import { Button } from "@/components/ui/button";
-import {
-  setFiles,
-  setIsModal,
-  setSelectedImage,
-} from "@/redux/features/mediaSlice";
-import { Check, LoaderCircle, Plus, Save, Trash2 } from "lucide-react";
+import { setFiles, setSelectedImage } from "@/redux/features/mediaSlice";
+import { LoaderCircle, Plus, Trash2 } from "lucide-react";
 import { instance } from "@/hooks/useAxios";
+import { formatFileSize } from "@/utils/helpers";
 
 const ProciveComponent = () => {
   // Redux state
@@ -32,8 +29,6 @@ const ProciveComponent = () => {
     } else {
       dispatch(setSelectedImage(singleImage as TMediaType));
     }
-
-    // dispatch(setIsModal(false));
   };
 
   // handle select image
@@ -54,8 +49,6 @@ const ProciveComponent = () => {
     try {
       const res = await instance.delete(`/media/${singleImage._id}`);
       const resData = res.data;
-
-      console.log({ resData });
 
       if (resData?.success) {
         const arr = [...images];
@@ -168,7 +161,7 @@ const ProciveComponent = () => {
                               Size
                             </span>
                             <span className="text-base text-slate-600">
-                              {singleImage?.size}
+                              {formatFileSize(singleImage?.size || 0)}
                             </span>
                           </li>
                           <li className="flex gap-2 items-start justify-between">
@@ -211,7 +204,11 @@ const ProciveComponent = () => {
                             className=""
                             onClick={handleDelete}
                           >
-                            {isDeleting ? <LoaderCircle /> : <Trash2 />}
+                            {isDeleting ? (
+                              <LoaderCircle className="animate-spin" />
+                            ) : (
+                              <Trash2 />
+                            )}
                           </Button>
                         </div>
                       </div>
