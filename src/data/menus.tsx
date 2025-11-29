@@ -50,6 +50,14 @@ const menus = [
       },
     ],
   },
+  {
+    label: "Appearance",
+    link: "/admin/service",
+  },
+  {
+    label: "Settings",
+    link: "/admin/settings",
+  },
 ];
 
 export default menus;

@@ -3,8 +3,10 @@ import { cn } from "@/lib/utils";
 import {
   Calendar,
   CreditCard,
+  Cuboid,
   Image as ImageIcon,
   LayoutDashboard,
+  Settings,
   ShoppingBasket,
   ShoppingCart,
   Users,
@@ -62,9 +64,14 @@ const AdminAside: FC<Props> = ({ isToggle }) => {
       link: "/admin/user",
     },
     {
-      name: "Calendar",
-      icon: <Calendar size={20} />,
-      link: "#",
+      name: "Appearance",
+      icon: <Cuboid size={20} />,
+      link: "/admin/service",
+    },
+    {
+      name: "Settings",
+      icon: <Settings size={20} />,
+      link: "/admin/settings",
     },
   ];
 
