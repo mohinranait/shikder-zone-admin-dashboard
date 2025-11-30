@@ -36,6 +36,7 @@ export default function EmailConfigForm({
     senderName: "",
     smtpPassword: "",
     isActive: false,
+    lastUpdated: new Date().toISOString(),
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,6 +69,7 @@ export default function EmailConfigForm({
         senderName: email.senderName || "",
         smtpPassword: email.smtpPassword || "",
         isActive: email.isActive || false,
+        lastUpdated: email.lastUpdated || new Date().toISOString(),
       });
     }
   }, [email]);

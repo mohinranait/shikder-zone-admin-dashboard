@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { useState, useEffect } from "react";
+import { formatDistance, formatDistanceStrict, subDays } from "date-fns";
 import {
   Card,
   CardContent,
@@ -95,6 +96,51 @@ export default function IntegrationsPage() {
     },
   ];
 
+  const recentActivities = [
+    {
+      id: "1",
+      activity: "Email service configuration updated",
+      description: "Updated SMTP settings for SendGrid",
+      time:
+        integrations?.email?.lastUpdated &&
+        formatDistanceStrict(
+          new Date(integrations?.email?.lastUpdated),
+          new Date(),
+          {
+            addSuffix: true,
+          }
+        ),
+    },
+    {
+      id: "2",
+      activity: "Cloudinary service configuration updated",
+      description: "Updated Cloudinary settings for media hosting",
+      time:
+        integrations?.cloudinary?.lastUpdated &&
+        formatDistanceStrict(
+          new Date(integrations?.cloudinary?.lastUpdated),
+          new Date(),
+          {
+            addSuffix: true,
+          }
+        ),
+    },
+    {
+      id: "3",
+      activity: "Facebook pixel configuration updated",
+      description: "Updated Facebook pixel settings for tracking",
+      time: integrations?.facebookPixel?.lastUpdated
+        ? formatDistanceStrict(
+            new Date(integrations?.facebookPixel?.lastUpdated),
+            new Date(),
+            {
+              addSuffix: true,
+            }
+          )
+        : "No recent activity",
+    },
+  ];
+
   return (
     <div className="space-y-8">
       <div>
@@ -129,9 +175,19 @@ export default function IntegrationsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">2h ago</div>
+            {integrations?.updatedAt && (
+              <div className="text-3xl font-bold text-foreground">
+                {formatDistanceStrict(
+                  new Date(integrations?.updatedAt),
+                  new Date(),
+                  {
+                    addSuffix: true,
+                  }
+                )}
+              </div>
+            )}
             <p className="text-xs text-muted-foreground mt-1">
-              Email service updated
+              App service updated
             </p>
           </CardContent>
         </Card>
@@ -246,7 +302,7 @@ export default function IntegrationsPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
+                {recentActivities.map((item, i) => (
                   <div
                     key={i}
                     className="flex items-start gap-4 pb-4 border-b border-border last:border-0"
@@ -256,13 +312,13 @@ export default function IntegrationsPage() {
                     </div>
                     <div className="flex-1">
                       <p className="font-medium text-foreground">
-                        Email service configuration updated
+                        {item?.activity}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Updated SMTP settings for SendGrid
+                        {item?.description}
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        2 hours ago
+                        {item?.time}
                       </p>
                     </div>
                   </div>

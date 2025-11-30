@@ -33,6 +33,7 @@ export default function CloudinaryConfigForm({
     cloudName: "",
     apiKey: "",
     apiSecret: "",
+    lastUpdated: new Date().toISOString(),
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +68,7 @@ export default function CloudinaryConfigForm({
         cloudName: cloudinary.cloudName || "",
         apiKey: cloudinary.apiKey || "",
         apiSecret: cloudinary.apiSecret || "",
+        lastUpdated: cloudinary.lastUpdated || new Date().toISOString(),
       });
     }
   }, [cloudinary]);

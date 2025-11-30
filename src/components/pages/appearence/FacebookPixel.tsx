@@ -33,6 +33,7 @@ export default function FacebookPixelConfigForm({
     accessToken: "",
     enableTracking: true,
     isActive: false,
+    lastUpdated: new Date().toISOString(),
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +70,7 @@ export default function FacebookPixelConfigForm({
         accessToken: facebook.accessToken || "",
         enableTracking: facebook.enableTracking || false,
         isActive: facebook.isActive || false,
+        lastUpdated: facebook.lastUpdated || new Date().toISOString(),
       });
     }
   }, [facebook]);

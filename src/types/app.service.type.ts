@@ -6,6 +6,7 @@ export type EmailIntegration = {
   smtpEmail: string,
   senderName: string,
   isActive: boolean,
+  lastUpdated: string
 };
 
 export type CloudinaryIntegration = {
@@ -13,6 +14,7 @@ export type CloudinaryIntegration = {
   apiKey?: string;
   apiSecret?: string;
   isActive: boolean,
+  lastUpdated: string
 };
 
 export type FacebookPixelIntegration = {
@@ -20,6 +22,7 @@ export type FacebookPixelIntegration = {
   accessToken?: string;
   enableTracking?: boolean;
   isActive?: boolean;
+  lastUpdated: string
 };
 
 
