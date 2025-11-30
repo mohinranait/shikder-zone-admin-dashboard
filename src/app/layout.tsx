@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Brand Collection BD | admin",
-  description: "Brand Collection",
+  title: "Shikder Zone | admin",
+  description: "Shikder Zone admin panel",
 };
 
 export default function RootLayout({

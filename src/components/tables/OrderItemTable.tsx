@@ -63,7 +63,7 @@ const OrderItemTable = ({ order }: Props) => {
             <div className="grid grid-cols-2 pb-4 gap-2">
               <div className="">
                 <p className="text-lg font-bold text-gray-800">From</p>
-                <p className="text-gray-600">Brand Collection BD</p>
+                <p className="text-gray-600">Shikder Zone</p>
                 <p className="text-gray-600">
                   Bangla Bazar, Turag, Dhaka 10000
                 </p>
