@@ -12,10 +12,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle, Check, Mail, ImageIcon, Zap } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-// import EmailConfigForm from "./components/email-config"
-// import CloudinaryConfigForm from "./components/cloudinary-config"
-// import FacebookPixelConfigForm from "./components/facebook-pixel-config"
-// import IntegrationGrid from "./components/integration-grid"
 import { cn } from "@/lib/utils";
 import IntegrationGrid from "@/components/pages/appearence/IntegrationGrid";
 import EmailConfigForm from "@/components/pages/appearence/email-config";
@@ -24,12 +20,12 @@ import FacebookPixelConfigForm from "@/components/pages/appearence/FacebookPixel
 import { instance } from "@/hooks/useAxios";
 import { AppIntegrationType } from "@/types/app.service.type";
 
-interface Integration {
+export interface IIntegration {
   id: string;
   name: string;
   description: string;
   icon: React.ReactNode;
-  status: "connected" | "disconnected" | "error";
+  status: "Connected" | "Disconnected" | "error";
   configured: boolean;
   category: string;
 }
@@ -42,6 +38,11 @@ export default function IntegrationsPage() {
   );
 
   console.log({ integrations });
+
+  const connectedApp =
+    Object.values(integrations)?.filter(
+      (item) => item && typeof item === "object" && item.isActive === true
+    )?.length || 0;
 
   useEffect(() => {
     fetchIntegrations();
@@ -62,13 +63,13 @@ export default function IntegrationsPage() {
     }
   };
 
-  const availableIntegrations: Integration[] = [
+  const availableIntegrations: IIntegration[] = [
     {
       id: "email",
       name: "Email Service",
       description: "Send transactional emails and newsletters",
       icon: <Mail className="h-8 w-8" />,
-      status: "disconnected",
+      status: integrations?.email?.isActive ? "Connected" : "Disconnected",
       configured: false,
       category: "communication",
     },
@@ -77,7 +78,7 @@ export default function IntegrationsPage() {
       name: "Cloudinary",
       description: "Image hosting and optimization",
       icon: <ImageIcon className="h-8 w-8" />,
-      status: "disconnected",
+      status: integrations?.cloudinary?.isActive ? "Connected" : "Disconnected",
       configured: false,
       category: "media",
     },
@@ -86,7 +87,9 @@ export default function IntegrationsPage() {
       name: "Facebook Pixel",
       description: "Track user behavior and conversions",
       icon: <Zap className="h-8 w-8" />,
-      status: "disconnected",
+      status: integrations?.facebookPixel?.isActive
+        ? "Connected"
+        : "Disconnected",
       configured: false,
       category: "analytics",
     },
@@ -111,7 +114,9 @@ export default function IntegrationsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">2</div>
+            <div className="text-3xl font-bold text-foreground">
+              {connectedApp}
+            </div>
             <p className="text-xs text-muted-foreground mt-1">
               out of 3 services
             </p>
@@ -200,13 +205,22 @@ export default function IntegrationsPage() {
 
             <div className="lg:col-span-2">
               {selectedIntegration === "email" && (
-                <EmailConfigForm onSuccess={fetchIntegrations} />
+                <EmailConfigForm
+                  onSuccess={fetchIntegrations}
+                  email={integrations.email}
+                />
               )}
               {selectedIntegration === "cloudinary" && (
-                <CloudinaryConfigForm onSuccess={fetchIntegrations} />
+                <CloudinaryConfigForm
+                  onSuccess={fetchIntegrations}
+                  cloudinary={integrations.cloudinary}
+                />
               )}
               {selectedIntegration === "facebook-pixel" && (
-                <FacebookPixelConfigForm onSuccess={fetchIntegrations} />
+                <FacebookPixelConfigForm
+                  onSuccess={fetchIntegrations}
+                  facebook={integrations.facebookPixel}
+                />
               )}
               {!selectedIntegration && (
                 <Card className="border-dashed">

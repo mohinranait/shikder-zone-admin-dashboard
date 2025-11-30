@@ -11,19 +11,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, AlertCircle, Clock } from "lucide-react";
-
-interface Integration {
-  id: string;
-  name: string;
-  description: string;
-  icon: React.ReactNode;
-  status: "connected" | "disconnected" | "error";
-  configured: boolean;
-  category: string;
-}
+import { IIntegration } from "@/app/(admin)/admin/service/page";
 
 interface IntegrationGridProps {
-  integrations: Integration[];
+  integrations: IIntegration[];
   onSelect?: (id: string) => void;
 }
 
@@ -33,9 +24,9 @@ export default function IntegrationGrid({
 }: IntegrationGridProps) {
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "connected":
+      case "Connected":
         return <Check className="h-4 w-4 text-green-500" />;
-      case "error":
+      case "Error":
         return <AlertCircle className="h-4 w-4 text-red-500" />;
       default:
         return <Clock className="h-4 w-4 text-gray-500" />;
@@ -44,9 +35,9 @@ export default function IntegrationGrid({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "connected":
+      case "Connected":
         return "bg-green-100 text-green-800";
-      case "error":
+      case "Error":
         return "bg-red-100 text-red-800";
       default:
         return "bg-gray-100 text-gray-800";

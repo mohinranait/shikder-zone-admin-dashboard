@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -15,17 +15,21 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Check } from "lucide-react";
 import { instance } from "@/hooks/useAxios";
+import { AppIntegrationType } from "@/types/app.service.type";
 
 interface CloudinaryConfigFormProps {
   onSuccess?: () => void;
+  cloudinary: AppIntegrationType["cloudinary"];
 }
 
 export default function CloudinaryConfigForm({
   onSuccess,
+  cloudinary,
 }: CloudinaryConfigFormProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
+    isActive: false,
     cloudName: "",
     apiKey: "",
     apiSecret: "",
@@ -55,6 +59,17 @@ export default function CloudinaryConfigForm({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (cloudinary) {
+      setFormData({
+        isActive: cloudinary.isActive || false,
+        cloudName: cloudinary.cloudName || "",
+        apiKey: cloudinary.apiKey || "",
+        apiSecret: cloudinary.apiSecret || "",
+      });
+    }
+  }, [cloudinary]);
 
   return (
     <Card>
@@ -116,6 +131,25 @@ export default function CloudinaryConfigForm({
             <p className="text-xs text-muted-foreground mt-1">
               Keep this secret safe - do not share publicly
             </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              id="isActiveCloudinary"
+              name="isActive"
+              type="checkbox"
+              checked={formData.isActive}
+              onChange={(e) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  isActive: e.target.checked,
+                }));
+              }}
+              className="h-4 w-4 rounded border-gray-300"
+            />
+            <Label htmlFor="isActiveCloudinary" className="cursor-pointer">
+              Enable email service on this site
+            </Label>
           </div>
 
           <Button type="submit" disabled={loading} className="w-full">

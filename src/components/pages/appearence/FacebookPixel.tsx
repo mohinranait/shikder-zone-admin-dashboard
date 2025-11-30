@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -14,20 +14,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Check } from "lucide-react";
+import { AppIntegrationType } from "@/types/app.service.type";
+import { instance } from "@/hooks/useAxios";
 
 interface FacebookPixelConfigFormProps {
   onSuccess?: () => void;
+  facebook: AppIntegrationType["facebookPixel"];
 }
 
 export default function FacebookPixelConfigForm({
   onSuccess,
+  facebook,
 }: FacebookPixelConfigFormProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
-    pixel_id: "",
-    access_token: "",
-    enable_tracking: true,
+    pixelId: "",
+    accessToken: "",
+    enableTracking: true,
+    isActive: false,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,14 +47,12 @@ export default function FacebookPixelConfigForm({
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch("/api/integrations/facebook-pixel", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const res = await instance.post("/integrations/facebook-pixel", {
+        ...formData,
       });
-      if (res.ok) {
+      const data = res.data;
+      if (data.success) {
         setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
         onSuccess?.();
       }
     } catch (error) {
@@ -58,6 +61,17 @@ export default function FacebookPixelConfigForm({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (facebook) {
+      setFormData({
+        pixelId: facebook.pixelId || "",
+        accessToken: facebook.accessToken || "",
+        enableTracking: facebook.enableTracking || false,
+        isActive: facebook.isActive || false,
+      });
+    }
+  }, [facebook]);
 
   return (
     <Card>
@@ -82,9 +96,9 @@ export default function FacebookPixelConfigForm({
             <Label htmlFor="pixel_id">Pixel ID</Label>
             <Input
               id="pixel_id"
-              name="pixel_id"
+              name="pixelId"
               placeholder="Your Facebook Pixel ID"
-              value={formData.pixel_id}
+              value={formData.pixelId}
               onChange={handleInputChange}
               required
             />
@@ -97,10 +111,10 @@ export default function FacebookPixelConfigForm({
             <Label htmlFor="access_token">Access Token</Label>
             <Input
               id="access_token"
-              name="access_token"
+              name="accessToken"
               type="password"
               placeholder="Your access token"
-              value={formData.access_token}
+              value={formData.accessToken}
               onChange={handleInputChange}
               required
             />
@@ -109,9 +123,9 @@ export default function FacebookPixelConfigForm({
           <div className="flex items-center gap-2">
             <input
               id="enable_tracking"
-              name="enable_tracking"
+              name="enableTracking"
               type="checkbox"
-              checked={formData.enable_tracking}
+              checked={formData.enableTracking}
               onChange={handleInputChange}
               className="h-4 w-4 rounded border-gray-300"
             />
