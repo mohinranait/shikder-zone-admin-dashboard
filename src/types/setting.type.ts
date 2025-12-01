@@ -10,7 +10,7 @@ export interface ISetting {
     metadata: {
         title: string;
         description: string;
-        keywords: never[];
+        keywords: string[];
     };
     socialMedia: {
         facebook: string;

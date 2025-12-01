@@ -13,6 +13,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ISetting } from "@/types/setting.type";
+import Image from "next/image";
+import { Upload } from "lucide-react";
+import SelectImageFromModal from "@/components/shared/SelectImageFromModal";
+import { useAppDispatch } from "@/hooks/useRedux";
+import {
+  addUnicName,
+  addVariant,
+  setIsModal,
+} from "@/redux/features/mediaSlice";
 
 interface BrandingSectionProps {
   formData: ISetting;
@@ -23,19 +32,20 @@ export default function BrandingSection({
   formData,
   setFormData,
 }: BrandingSectionProps) {
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setFormData({
-          ...formData,
-          logo: { url: event.target?.result as string },
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const dispatch = useAppDispatch();
+  // const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (event) => {
+  //       setFormData({
+  //         ...formData,
+  //         logo: { url: event.target?.result as string },
+  //       });
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   return (
     <Card>
@@ -51,24 +61,39 @@ export default function BrandingSection({
           <div className="flex items-center gap-6">
             {formData.logo?.url && (
               <div className="w-24 h-24 rounded-lg border border-border overflow-hidden flex items-center justify-center bg-secondary">
-                <img
-                  src={formData.logo.url || "/placeholder.svg"}
+                <Image
+                  width={100}
+                  height={100}
+                  src={formData.logo.url || "/images/image.png"}
                   alt="Logo preview"
                   className="w-full h-full object-contain"
                 />
               </div>
             )}
-            <Button variant="outline" asChild>
-              <label className="cursor-pointer">
-                📤 Upload Logo
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoUpload}
-                  className="hidden"
-                />
-              </label>
-            </Button>
+
+            <SelectImageFromModal
+              singleFile={(imgFile) => {
+                console.log({ imgFile });
+                setFormData({
+                  ...formData,
+                  logo: { ...formData.logo, url: imgFile.fileUrl },
+                });
+              }}
+            >
+              <Button
+                onClick={() => {
+                  dispatch(setIsModal(true));
+                  dispatch(addVariant("Single"));
+                  dispatch(addUnicName("uploadLogo"));
+                }}
+                variant="outline"
+                asChild
+              >
+                <label className="cursor-pointer">
+                  <Upload /> Upload Logo
+                </label>
+              </Button>
+            </SelectImageFromModal>
           </div>
           <p className="text-sm text-muted-foreground">
             Recommended size: 200x200px. Formats: PNG, JPG, GIF

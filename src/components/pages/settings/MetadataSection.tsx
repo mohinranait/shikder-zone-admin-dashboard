@@ -1,18 +1,12 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { ISetting } from "@/types/setting.type";
+import { X } from "lucide-react";
 
 interface MetadataSectionProps {
   formData: ISetting;
@@ -29,7 +23,7 @@ export default function MetadataSection({
         ...formData,
         metadata: {
           ...formData.metadata,
-          //   keywords: [...formData.metadata.keywords, keyword.trim()],
+          keywords: [...formData.metadata.keywords, keyword.trim()],
         },
       });
     }
@@ -49,13 +43,7 @@ export default function MetadataSection({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>SEO & Metadata</CardTitle>
-        <CardDescription>
-          Optimize your store for search engines
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="pt-6 space-y-6">
         <div className="space-y-2">
           <Label htmlFor="metaTitle">Meta Title</Label>
           <Input
@@ -70,7 +58,7 @@ export default function MetadataSection({
             }
           />
           <p className="text-sm text-muted-foreground">
-            {formData.metadata.title.length}/60 characters
+            {formData?.metadata?.title?.length || 0}/60 characters
           </p>
         </div>
 
@@ -89,7 +77,7 @@ export default function MetadataSection({
             rows={3}
           />
           <p className="text-sm text-muted-foreground">
-            {formData.metadata.description.length}/160 characters
+            {formData?.metadata?.description?.length || 0}/160 characters
           </p>
         </div>
 
@@ -130,9 +118,10 @@ export default function MetadataSection({
                   {keyword}
                   <button
                     onClick={() => handleRemoveKeyword(index)}
-                    className="hover:opacity-70"
+                    className="hover:opacity-70 size-4"
+                    type="button"
                   >
-                    <X className="h-3 w-3" />
+                    <X className="size-3" />
                   </button>
                 </div>
               )

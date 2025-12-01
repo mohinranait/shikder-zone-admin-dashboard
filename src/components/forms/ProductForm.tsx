@@ -1,5 +1,5 @@
 "use client";
-import { BookPlus, Pen, Save, UploadCloudIcon } from "lucide-react";
+import { BookPlus, Pen, Save, UploadCloudIcon, X } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
@@ -188,6 +188,8 @@ const ProductForm = () => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editId]);
+
+  console.log({ gallarys });
 
   if (loading) return <div>Data Fetching</div>;
 
@@ -551,10 +553,27 @@ const ProductForm = () => {
                             backgroundPosition: "center",
                             backgroundSize: "cover",
                           }}
-                          className="w-[80px] h-[80px] cursor-pointer hover:bg-slate-200 flex items-center justify-center border-slate-200 rounded border border-dashed "
-                        ></div>
+                          className="w-[80px] relative h-[80px] cursor-pointer hover:bg-slate-200 flex items-center justify-center border-slate-200 rounded border border-dashed "
+                        >
+                          <button
+                            onClick={() => {
+                              const arr = [...gallarys]?.filter(
+                                (img) => img?._id !== file?._id
+                              );
+                              setGallarys(arr);
+                            }}
+                            type="button"
+                            className="rounded-full bg-white shadow hover:bg-red-600 hover:text-white w-4 h-4 flex items-center justify-center absolute top-0 right-0"
+                          >
+                            <X className=" size-3" />
+                          </button>
+                        </div>
                       ))}
-                    <SelectImageFromModal multiFiles={setGallarys}>
+                    <SelectImageFromModal
+                      multiFiles={(e) =>
+                        setGallarys((prev) => [...prev, ...(e as TMediaType[])])
+                      }
+                    >
                       <div
                         onClick={() => {
                           dispatch(setIsModal(true));

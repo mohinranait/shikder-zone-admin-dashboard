@@ -10,19 +10,14 @@ import BasicInfoSection from "@/components/pages/settings/BasicInfoSection";
 import BrandingSection from "@/components/pages/settings/BrandingSection";
 import MetadataSection from "@/components/pages/settings/MetadataSection";
 import SocialMediaSection from "@/components/pages/settings/SocialMediaSection";
-import AddressSection from "@/components/pages/settings/AddressSection";
 import { instance } from "@/hooks/useAxios";
-// import BasicInfoSection from "./components/basic-info-section";
-// import BrandingSection from "./components/branding-section";
-// import MetadataSection from "./components/metadata-section";
-// import SocialMediaSection from "./components/social-media-section";
-// import AddressSection from "./components/address-section";
+import { ISetting } from "@/types/setting.type";
 
 export default function SettingsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [savingTab, setSavingTab] = useState<string | null>(null);
   //   const { toast } = useToast();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ISetting>({
     storeName: "",
     storeEmail: "",
     storePhone: "",
@@ -61,41 +56,39 @@ export default function SettingsPage() {
       setIsLoading(true);
       const res = await instance.get(`/settings`);
       const data = res.data;
+      console.log({ data });
+
       if (data.success) {
-        setFormData(data.payload?.settings);
+        setFormData(data.payload);
       }
     } catch (error) {
       console.error("Error fetching settings:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load settings",
-        variant: "destructive",
-      });
+
+      toast.error(`Failed to load settings`);
     } finally {
       setIsLoading(false);
     }
   };
+
+  console.log({ formData });
 
   const handleSaveTab = async (tabName: string) => {
     try {
       setSavingTab(tabName);
       const res = await instance.post("/settings", { ...formData });
       const data = res.data;
+      console.log({ data });
+
       if (data.success) {
-        toast({
-          title: "Success",
-          description: `${tabName} saved successfully`,
-        });
+        setFormData(data.payload);
+        toast.success(`${tabName} saved successfully`);
       } else {
         throw new Error("Failed to save settings");
       }
     } catch (error) {
       console.error("Error saving settings:", error);
-      toast({
-        title: "Error",
-        description: `Failed to save ${tabName}`,
-        variant: "destructive",
-      });
+
+      toast.error(`Failed to save ${tabName}`);
     } finally {
       setSavingTab(null);
     }
@@ -110,7 +103,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-8">
       <div>
         <h1 className="text-3xl font-bold text-foreground">Store Settings</h1>
         <p className="text-muted-foreground mt-2">
@@ -124,7 +117,6 @@ export default function SettingsPage() {
           <TabsTrigger value="branding">Branding</TabsTrigger>
           <TabsTrigger value="metadata">SEO</TabsTrigger>
           <TabsTrigger value="social">Social Media</TabsTrigger>
-          <TabsTrigger value="address">Address</TabsTrigger>
         </TabsList>
 
         {/* Basic Information Tab */}
@@ -199,25 +191,6 @@ export default function SettingsPage() {
               </>
             ) : (
               "Save Social Media"
-            )}
-          </Button>
-        </TabsContent>
-
-        {/* Address Tab */}
-        <TabsContent value="address" className="space-y-4">
-          <AddressSection formData={formData} setFormData={setFormData} />
-          <Button
-            onClick={() => handleSaveTab("Store Address")}
-            disabled={savingTab === "Store Address"}
-            size="lg"
-          >
-            {savingTab === "Store Address" ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              "Save Address"
             )}
           </Button>
         </TabsContent>

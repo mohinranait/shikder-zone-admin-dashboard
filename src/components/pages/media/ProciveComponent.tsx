@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import UploadImageComponent from "./UploadImageComponent";
 import { Button } from "@/components/ui/button";
 import { setFiles, setSelectedImage } from "@/redux/features/mediaSlice";
-import { LoaderCircle, Plus, Trash2 } from "lucide-react";
+import { LoaderCircle, Plus, Trash2, X } from "lucide-react";
 import { instance } from "@/hooks/useAxios";
 import { formatFileSize } from "@/utils/helpers";
 
@@ -114,17 +114,30 @@ const ProciveComponent = () => {
             <div className="w-[300px]">
               {uploadVariant === "Multiple" ? (
                 <div>
-                  <div className="grid gap-2 grid-cols-2 xl:grid-cols-3">
+                  <div className="grid pb-2 gap-2 grid-cols-2 xl:grid-cols-3">
                     {multipleImages?.length > 0 ? (
                       multipleImages?.map((img, i) => (
-                        <Image
-                          key={i}
-                          src={img?.fileUrl}
-                          width={100}
-                          height={100}
-                          alt="image"
-                          className="border w-full p-1"
-                        />
+                        <div key={i} className="border relative p-1">
+                          <button
+                            onClick={() => {
+                              const arr = [...multipleImages]?.filter(
+                                (fImg) => fImg?._id !== img?._id
+                              );
+                              setMultipleImages(arr);
+                            }}
+                            type="button"
+                            className="rounded-full bg-white shadow hover:bg-red-600 hover:text-white w-4 h-4 flex items-center justify-center absolute top-0 right-0"
+                          >
+                            <X className=" size-3" />
+                          </button>
+                          <Image
+                            src={img?.fileUrl}
+                            width={100}
+                            height={100}
+                            alt="image"
+                            className=" w-full "
+                          />
+                        </div>
                       ))
                     ) : (
                       <div>Images not selected</div>
